@@ -11,6 +11,8 @@ public class BubbleSizer : MonoBehaviour
     public float popDuration;
     public float shrink;
 
+    private float volume;
+    private float otherVolume;
     //public CinemachineCamera virtualCamera;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,13 +27,18 @@ public class BubbleSizer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        this.transform.localScale = new Vector3(transform.localScale.x * shrink,
+                                                transform.localScale.y * shrink,
+                                                transform.localScale.z * shrink);
 
+        volume = this.transform.localScale.x * this.transform.localScale.y * this.transform.localScale.z;
+        Debug.Log("CURRVOLUME: " + volume);
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        float otherVolume = other.gameObject.transform.localScale.x * other.gameObject.transform.localScale.y * other.gameObject.transform.localScale.z;
-        float volume = this.transform.localScale.x * this.transform.localScale.y * this.transform.localScale.z;
+        otherVolume = other.gameObject.transform.localScale.x * other.gameObject.transform.localScale.y * other.gameObject.transform.localScale.z;
+        volume = this.transform.localScale.x * this.transform.localScale.y * this.transform.localScale.z;
 
         Debug.Log("OTHER VOLUME: " + otherVolume);
         Debug.Log("VOLUME: " + volume);
