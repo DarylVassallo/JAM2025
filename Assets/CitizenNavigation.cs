@@ -12,6 +12,7 @@ public class CitizenNavigation : MonoBehaviour
     private int currentIndex;
     public float vicinity;
 
+    public bool isSick;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,6 +23,8 @@ public class CitizenNavigation : MonoBehaviour
             endPoints.Add(child.position);  // Add each child transform to the list
         }
         currentIndex = 0;
+
+        isSick = false;
     }
 
     // Update is called once per frame
