@@ -27,15 +27,17 @@ public class BubbleMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 currentVelocity = rb.linearVelocity;
-        rb.linearVelocity = new Vector3(currentVelocity.x, currentVelocity.y, forwardForce);
+        Vector3 velocity = transform.forward * forwardForce;
+        rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
+
 
         rb.AddForce(Vector3.down * fallSpeed, ForceMode.Acceleration);
         
 
         Vector3 currentMousePosition = Input.mousePosition;
         float mouseDeltaX = currentMousePosition.x - lastMousePosition.x;
-        rb.AddForce(Vector3.right * mouseDeltaX * sensitivity, ForceMode.Force);
+        //rb.AddForce(Vector3.right * mouseDeltaX * sensitivity, ForceMode.Force);
+        transform.Rotate(Vector3.up * mouseDeltaX * sensitivity);
 
         if (Input.GetKey(KeyCode.Space))
         {
