@@ -37,26 +37,45 @@ public class BubbleSizer : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        otherVolume = other.gameObject.transform.localScale.x * other.gameObject.transform.localScale.y * other.gameObject.transform.localScale.z;
-        volume = this.transform.localScale.x * this.transform.localScale.y * this.transform.localScale.z;
-
-        Debug.Log("OTHER VOLUME: " + otherVolume);
-        Debug.Log("VOLUME: " + volume);
-        if (otherVolume > volume)
+        if (other.gameObject.CompareTag("Citizen"))
         {
-            Debug.Log("DEATH!!!!!!!!!!!!!!!!!!");
-            StartCoroutine(Death());
+            volume = this.transform.localScale.x * this.transform.localScale.y * this.transform.localScale.z;
+
+            if (volume > 0.25)
+            {
+                CitizenNavigation citizen = other.gameObject.GetComponent<CitizenNavigation>();
+                citizen.isSick = true;
+
+                float finalVolume = volume - 0.25f;
+                this.transform.localScale = new Vector3(finalVolume * transform.localScale.x / volume,
+                                                    finalVolume * transform.localScale.y / volume,
+                                                    finalVolume * transform.localScale.z / volume);
+                volume = this.transform.localScale.x * this.transform.localScale.y * this.transform.localScale.z;
+            }
         }
         else
         {
-            Debug.Log("CONSUME");
-            float finalVolume = volume + otherVolume;
-            this.transform.localScale = new Vector3(finalVolume * transform.localScale.x / volume,
-                                                finalVolume * transform.localScale.y / volume,
-                                                finalVolume * transform.localScale.z / volume);
-            Destroy(other.gameObject);
+            otherVolume = other.gameObject.transform.localScale.x * other.gameObject.transform.localScale.y * other.gameObject.transform.localScale.z;
             volume = this.transform.localScale.x * this.transform.localScale.y * this.transform.localScale.z;
-            Debug.Log("NEWVOLUME: " + volume);
+
+            Debug.Log("OTHER VOLUME: " + otherVolume);
+            Debug.Log("VOLUME: " + volume);
+            if (otherVolume > volume)
+            {
+                Debug.Log("DEATH!!!!!!!!!!!!!!!!!!");
+                StartCoroutine(Death());
+            }
+            else
+            {
+                Debug.Log("CONSUME");
+                float finalVolume = volume + otherVolume;
+                this.transform.localScale = new Vector3(finalVolume * transform.localScale.x / volume,
+                                                    finalVolume * transform.localScale.y / volume,
+                                                    finalVolume * transform.localScale.z / volume);
+                Destroy(other.gameObject);
+                volume = this.transform.localScale.x * this.transform.localScale.y * this.transform.localScale.z;
+                Debug.Log("NEWVOLUME: " + volume);
+            }
         }
 
 
