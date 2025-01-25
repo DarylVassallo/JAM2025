@@ -32,7 +32,7 @@ public class BubbleSizer : MonoBehaviour
                                                 transform.localScale.z * shrink);
 
         volume = this.transform.localScale.x * this.transform.localScale.y * this.transform.localScale.z;
-        Debug.Log("CURRVOLUME: " + volume);
+        //Debug.Log("CURRVOLUME: " + volume);
     }
 
     private void OnCollisionEnter(Collision other)
