@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class CitizenNavigation : MonoBehaviour
 {
-    public Transform player;
     private UnityEngine.AI.NavMeshAgent agent;
 
     public GameObject destinations;
@@ -22,7 +21,7 @@ public class CitizenNavigation : MonoBehaviour
         {
             endPoints.Add(child.position);  // Add each child transform to the list
         }
-        currentIndex = 0;
+        currentIndex = Random.Range(0, endPoints.Count);
 
         isSick = false;
     }
@@ -30,19 +29,20 @@ public class CitizenNavigation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //agent.destination = player.position;
-
-        float distance = Vector3.Distance(transform.position, endPoints[currentIndex]);
-        Debug.Log("distance: " + distance);
-        Debug.Log("vicinity: " + vicinity);
-        if (distance <= vicinity)
+        if (isSick)
         {
-            currentIndex = Random.Range(0, endPoints.Count);
+            MeshRenderer sickIcon = transform.GetChild(0).GetComponent<MeshRenderer>();
+            sickIcon.enabled = true;
         }
+        else
+        {
+            float distance = Vector3.Distance(transform.position, endPoints[currentIndex]);
+            if (distance <= vicinity)
+            {
+                currentIndex = Random.Range(0, endPoints.Count);
+            }
 
-        agent.destination = endPoints[currentIndex];
-
-        Debug.Log("POS: " + transform.position);
-        Debug.Log("endPoints[currentIndex]: " + endPoints[currentIndex]);
+            agent.destination = endPoints[currentIndex];
+        }
     }
 }

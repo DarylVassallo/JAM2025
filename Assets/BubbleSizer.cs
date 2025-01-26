@@ -35,23 +35,21 @@ public class BubbleSizer : MonoBehaviour
         //Debug.Log("CURRVOLUME: " + volume);
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.gameObject);
         if (other.gameObject.CompareTag("Citizen"))
         {
             volume = this.transform.localScale.x * this.transform.localScale.y * this.transform.localScale.z;
+            Debug.Log("volume: " + volume);
 
-            if (volume > 0.25)
-            {
-                CitizenNavigation citizen = other.gameObject.GetComponent<CitizenNavigation>();
-                citizen.isSick = true;
-
-                float finalVolume = volume - 0.25f;
-                this.transform.localScale = new Vector3(finalVolume * transform.localScale.x / volume,
-                                                    finalVolume * transform.localScale.y / volume,
-                                                    finalVolume * transform.localScale.z / volume);
-                volume = this.transform.localScale.x * this.transform.localScale.y * this.transform.localScale.z;
-            }
+            CitizenNavigation citizen = other.gameObject.GetComponent<CitizenNavigation>();
+            citizen.isSick = true;
+            Debug.Log("SICK!!!!");
+            float finalVolume = volume - 0.1f;
+            this.transform.localScale = new Vector3(finalVolume * transform.localScale.x / volume,
+                                                finalVolume * transform.localScale.y / volume,
+                                                finalVolume * transform.localScale.z / volume);
         }
         else
         {
